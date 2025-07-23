@@ -21,7 +21,7 @@ def get_string(expression):
         case "variable":
             return expression['value']
         case "input":
-            data = f"\"{input(expression['value'][1:-1])}\""
+            data = f"input(\"{expression['value'][1:-1]}\")"
             return data
         case "string_addition":
             totalString = ""
