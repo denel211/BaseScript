@@ -38,7 +38,7 @@ In order to build a BS file to a Python 3.13.2 file, run the command ``basescrip
  - **Binary**: `<numeric-expression relational-operator numeric-expression>`
 ### Variable expressions
  - **Variable**: `<identifier>`
- - **Boolean**: `(<expression> <operator> <expression>)`
+ - **Boolean**: `<<expression> <operator> <expression>>` (the expressions and operator are literally between angle brackets)
  - **Input**: `input <expression>`
 
 ## Operators

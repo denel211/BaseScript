@@ -1,7 +1,7 @@
 from debug import *
 import re
 
-functiontokens = ['log', 'var', 'input', 'if', 'repeat']
+functiontokens = ['log', 'var', 'input', 'if', 'repeat', 'func', 'call']
 statictokens = ['(', ')', '[', ']', '{', '}', ';', '+', '*', '/', '-', '=', ':']
 
 token_patterns = functiontokens + statictokens

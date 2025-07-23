@@ -29,6 +29,7 @@ def parse_expression(tokens):
         if token.isdigit():
             return {"type": "number", "value": int(token)}
         elif token.startswith('"') and token.endswith('"'):
+            print("STRING")
             return {"type": "string", "value": token.strip('"')}
         elif token == "True" or token == "False":
             return {
@@ -58,7 +59,7 @@ def parse_expression(tokens):
         left = tokens[1]
         operator = tokens[2]
         right = tokens[3]
-        if operator in ["is", "isnt", "gt", "lt"] and tokens[0] == "(" and tokens[-1] == ")":
+        if operator in ["is", "isnt", "gt", "lt"] and tokens[0] == "<" and tokens[-1] == ">":
             return {
                 "type": "bool_expression",
                 "operator": operator,
@@ -157,6 +158,58 @@ def parse_statement(tokens):
         else:
             expr = parse_expression(tokens[1:colon_index])
             return {"type": "repeat_statement", "amount_expression": expr, "action": parse_statement(tokens[colon_index+1:])}
+    if tokens[0] == "func":
+        colon_index = tokens.index(":")
+        if colon_index + 1 < len(tokens) and tokens[colon_index + 1] == "{":
+            block_tokens = []
+            brace_count = 0
+            for i in range(colon_index + 1, len(tokens)):
+                if tokens[i] == "{":
+                    brace_count += 1
+                    if brace_count == 1:
+                        continue
+                if tokens[i] == "}":
+                    brace_count -= 1
+                    if brace_count == 0:
+                        break
+                if brace_count >= 1:
+                    block_tokens.append(tokens[i])
+            statements = []
+            current = []
+            for token in block_tokens:
+                if token == ";":
+                    if current:
+                        statements.append(current)
+                        current = []
+                else:
+                    current.append(token)
+            if current:
+                statements.append(current)
+            actions = []
+            for stmt in statements:
+                parsed_stmt = parse_statement(stmt)
+                if parsed_stmt is not None:
+                    actions.append(parsed_stmt)
+            expr = parse_expression(tokens[1:colon_index])
+            params = tokens[2:colon_index - 1]
+            print(tokens)
+            return {"type": "func_declaration", "name": tokens[1], "params": params, "actions": actions}
+        else:
+            expr = parse_expression(tokens[1:colon_index])
+            params = tokens[2:colon_index - 1]
+            return {"type": "func_declaration", "name": tokens[1], "params": params, "action": parse_statement(tokens[colon_index+1:])}
+    if tokens[0] == "call":
+        func_name = tokens[1]
+        params = tokens[tokens.index("(") + 1 : tokens.index(")")]
+        paramsParsed = []
+        for param in params:
+            if param == ",": 
+                continue
+            # print(parse_expression(param))
+            paramsParsed.append(parse_expression([param]))
+        print(params)
+        # print(paramsParsed)
+        return {"type": "func_call", "name": func_name, "params": paramsParsed}
 
 def parse(tokens):
     parsed = []

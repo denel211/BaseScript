@@ -85,6 +85,27 @@ def run(parsed):
                         repAction = action['action']
                         repActionInterpreted = interpret_action(repAction, indent + 1)
                         return f"{indent_str}for index in range(int({amount_expr})):\n{repActionInterpreted}"
+                case "func_declaration":
+                    amount_expr = action['name']
+                    totalParamString = ",".join(action['params'])[2:]
+                    if "actions" in action:
+                        block_lines = []
+                        for act in action['actions']:
+                            interpreted = interpret_action(act, indent + 1)
+                            indented_lines = "\n".join("  " + line if line.strip() != "" else line for line in interpreted.split("\n"))
+                            block_lines.append(indented_lines)
+                        block_code = "\n".join(block_lines)
+                        return f"{indent_str}def {amount_expr}({totalParamString}):\n{block_code}"
+                    else:
+                        repAction = action['action']
+                        repActionInterpreted = interpret_action(repAction, indent + 1)
+                        return f"{indent_str}def {amount_expr}({totalParamString}):\n{repActionInterpreted}"
+                case "func_call":
+                    totalParamString = ""
+                    for param in action['params']:
+                        print(param)
+                        totalParamString += get_string(param) + ","
+                    return f"{indent_str}{action['name']}({totalParamString[:-1]})"
         
         pythonActions.append(interpret_action(action))
     
