@@ -10,7 +10,7 @@ In order to use BaseScript shell, run the command ``basescript`` in the command 
 ### File
 In order to use BaseScript to run a BS file, run the command ``basescript filename.bs`` in the command line
 ### Build
-In order to build a BS file to a Python 3.12.2 file, run the command ``basescript filename.bs build=filename.py``. This will generate a working Python file , that can be run with Python 3.12.2.
+In order to build a BS file to a Python 3.13.2 file, run the command ``basescript filename.bs build=filename.py``. This will generate a working Python file , that can be run with Python 3.13.2.
 
 ## Statements
 ### Control statements
