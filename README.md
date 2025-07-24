@@ -1,8 +1,7 @@
 # BaseScript
 **A basic programming language. Interpreted to Python 3.13.2.**
 
-> [! WARNING]
-> Windows versions below Windows 10 are not supported
+> ### ⚠️ Windows versions below Windows 10 are not supported
 ## Usage
 ### Installation
 1. Download the newest release on the GitHub page
