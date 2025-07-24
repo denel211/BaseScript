@@ -124,7 +124,7 @@ def run(parsed):
     for action in pythonActions:
         lines.append(action)
     code = "\n".join(lines)
-    if build == False: exec(code, {}, scope)
+    if build == False: exec(code, scope, scope)
     if build != False:
         with open(build, "w", encoding="utf-8") as file:
 	        file.write(code)
