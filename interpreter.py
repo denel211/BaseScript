@@ -33,16 +33,16 @@ def get_string(expression):
                 return expression["value"]
             if expression['operator'] == "is":
                 operator = "=="
-                return f"{expression['left']} {operator} {expression['right']}"
+                return f"{get_string(expression['left'])} {operator} {get_string(expression['right'])}"
             if expression['operator'] == "isnt":
                 operator = "!="
-                return f"{expression['left']} {operator} {expression['right']}"
+                return f"{get_string(expression['left'])} {operator} {get_string(expression['right'])}"
             if expression['operator'] == "gt":
                 operator = ">"
-                return f"int({number(expression['left'])}) {operator} int({number(expression['right'])})"
+                return f"int({number(get_string(expression['left']))}) {operator} int({number(get_string(expression['right']))})"
             if expression['operator'] == "lt":
                 operator = "<"
-                return f"int({number(expression['left'])}) {operator} int({number(expression['right'])})"
+                return f"int({number(get_string(expression['left']))}) {operator} int({number(get_string(expression['right']))})"
         case "func_call":
             totalParamString = ""
             for param in expression['params']:
@@ -53,6 +53,12 @@ def get_string(expression):
             for param in expression['params']:
                 totalParamString += get_string(param) + ","
             return f"{expression['name']}({totalParamString[:-1]})"
+
+def get_string_array(expressions):
+    allStrings = []
+    for expression in expressions:
+        allStrings.append(get_string(expression))
+    return " ".join(allStrings)
 
 def run(parsed):
     pythonActions = []
@@ -68,7 +74,7 @@ def run(parsed):
                 case "input_statement":
                     return f"{indent_str}input({get_string(action['value'])})"
                 case "if_statement":
-                    amount_expr = get_string(action['amount_expression'])
+                    amount_expr = get_string_array(action['amount_expression'])
                     if "actions" in action:
                         block_lines = []
                         for act in action['actions']:

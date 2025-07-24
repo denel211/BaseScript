@@ -9,7 +9,7 @@ import time
 def shell():
     printAnyways("=" * 39)
     printAnyways("         BaseScript by Daniel    ")
-    printAnyways("          Version 1.3 - 2025        ")
+    printAnyways("          Version 1.4 - 2025        ")
     printAnyways("=" * 39)
     printAnyways("Welcome to the BaseScript Shell!")
     printAnyways("Type your commands below:")

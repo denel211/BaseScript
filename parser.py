@@ -54,11 +54,18 @@ def parse_expression(tokens):
                 "value": "NIS",
                 "variable": tokens[0].split()[0] or ""
             }
-    if len(tokens) == 5:
-        left = tokens[1]
-        operator = tokens[2]
-        right = tokens[3]
-        if operator in ["is", "isnt", "gt", "lt"] and tokens[0] == "<" and tokens[-1] == ">":
+    operators = ["is", "isnt", "gt", "lt"]
+    operatorFound = False
+    operatorIndex = 0
+    for token in tokens:
+        if token in operators: 
+            operatorFound = True
+            operatorIndex = tokens.index(token)
+    if operatorFound:
+        operator = tokens[operatorIndex]
+        if operator in operators and tokens[0] == "<" and tokens[-1] == ">":
+            left = parse_expression(tokens[1:operatorIndex])
+            right = parse_expression(tokens[operatorIndex + 1:-1])
             return {
                 "type": "bool_expression",
                 "operator": operator,
@@ -133,8 +140,29 @@ def parse_statement(tokens):
                 parsed_stmt = parse_statement(stmt)
                 if parsed_stmt is not None:
                     actions.append(parsed_stmt)
-            expr = parse_expression(tokens[1:colon_index])
-            return {"type": "if_statement", "amount_expression": expr, "actions": actions}
+
+            allData = []
+            i = 0
+            while i < len(tokens):
+                if tokens[i] == "<":
+                    end = i + 1
+                    while end < len(tokens) and tokens[end] != ">":
+                        end += 1
+                    if end < len(tokens):
+                        allData.append(tokens[i:end + 1])
+                        i = end + 1
+                        continue
+                
+                elif tokens[i] in ["and", "or"]:
+                    allData.append([tokens[i]])
+                
+                i += 1
+
+            allDataParsed = []
+            for data in allData:
+                allDataParsed.append(parse_expression(data))
+
+            return {"type": "if_statement", "amount_expression": allDataParsed, "actions": actions}
         else:
             expr = parse_expression(tokens[1:colon_index])
             return {"type": "if_statement", "amount_expression": expr, "action": parse_statement(tokens[colon_index+1:])}

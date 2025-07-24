@@ -13,6 +13,22 @@ In order to use BaseScript to run a BS file, run the command ``basescript filena
 ### Build
 In order to build a BS file to a Python 3.13.2 file, run the command ``basescript filename.bs build=filename.py``. This will generate a working Python file , that can be run with Python 3.13.2.
 
+## Changelog
+### 1.4
+ - Changed expression parsing
+ - Changed boolean expression logic to understand `and` and `or`
+### 1.3
+ - Added functions
+ - Added return statement
+ - Added int() and str()
+ - Added python function calling
+### 1.2
+ - Added code block functionality using brackets
+ - Added if-statement
+ - Added repeat-statement
+### 1.1
+ - Base update
+
 ## Statements
 ### Control statements
  - **if**  
