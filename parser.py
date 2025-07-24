@@ -29,7 +29,6 @@ def parse_expression(tokens):
         if token.isdigit():
             return {"type": "number", "value": int(token)}
         elif token.startswith('"') and token.endswith('"'):
-            print("STRING")
             return {"type": "string", "value": token.strip('"')}
         elif token == "True" or token == "False":
             return {
@@ -73,6 +72,24 @@ def parse_expression(tokens):
         for token in "".join(tokens).split("__"):
             returnTokens.append(token.strip())
         return {"type": "string_addition", "tokens": returnTokens}
+    if tokens[0] == "call":
+        func_name = tokens[1]
+        params = tokens[tokens.index("(") + 1 : tokens.index(")")]
+        paramsParsed = []
+        for param in params:
+            if param == ",": 
+                continue
+            paramsParsed.append(parse_expression([param]))
+        return {"type": "func_call", "name": func_name, "params": paramsParsed}
+    if tokens[0] == "pycall":
+        func_name = tokens[1]
+        params = tokens[tokens.index("(") + 1 : tokens.index(")")]
+        paramsParsed = []
+        for param in params:
+            if param == ",": 
+                continue
+            paramsParsed.append(parse_expression([param]))
+        return {"type": "py_func_call", "name": func_name, "params": paramsParsed}
 
 def parse_statement(tokens):
     if tokens[0] == "log":
@@ -192,7 +209,6 @@ def parse_statement(tokens):
                     actions.append(parsed_stmt)
             expr = parse_expression(tokens[1:colon_index])
             params = tokens[2:colon_index - 1]
-            print(tokens)
             return {"type": "func_declaration", "name": tokens[1], "params": params, "actions": actions}
         else:
             expr = parse_expression(tokens[1:colon_index])
@@ -205,11 +221,10 @@ def parse_statement(tokens):
         for param in params:
             if param == ",": 
                 continue
-            # print(parse_expression(param))
             paramsParsed.append(parse_expression([param]))
-        print(params)
-        # print(paramsParsed)
         return {"type": "func_call", "name": func_name, "params": paramsParsed}
+    if tokens[0] == "return":
+        return {"type": "return_statement", "value": parse_expression(tokens[1:])}
 
 def parse(tokens):
     parsed = []

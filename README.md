@@ -16,19 +16,30 @@ In order to build a BS file to a Python 3.13.2 file, run the command ``basescrip
 ### Control statements
  - **if**  
  **Description**: Conditional statement. If the boolean expression is True, the code within the block is executed.  
- **Syntax**: `if <boolean-expression>: {...};`
+ **Syntax**: `if <boolean-expression>: {...};`  
+
+ - **return**  
+ **Description**: Returns the value of the expression, and stops the execution of the function.  
+ **Syntax**: `return <expression>;`  
+
 ### Loop statements
  - **repeat**  
  **Description**: Repeat a block of code a specified number of times.  
- **Syntax**: `repeat <binary-expression, boolean-expression or numeric-expression>: {...};`
+ **Syntax**: `repeat <binary-expression, boolean-expression or numeric-expression>: {...};`  
+
 ### Declaration statements
  - **var**  
  **Description**: Declare a variable. The type of the variable is determined by the assigned value.  
- **Syntax**: `var <identifier> = <expression>;`
+ **Syntax**: `var <identifier> = <expression>;`  
+
+ - **func**  
+ **Description**: Declare a function. This function can later be called with the `call` statement or expression.  
+ **Syntax**: `func <identifier>([parameters]): {...};`  
+
 ### Extra statements
  - **log**  
  **Description**: Log a message to the console.  
- **Syntax**: `log <expression>;`
+ **Syntax**: `log <expression>;`  
 
 ## Expressions
 ### Literal expressions
@@ -40,6 +51,8 @@ In order to build a BS file to a Python 3.13.2 file, run the command ``basescrip
  - **Variable**: `<identifier>`
  - **Boolean**: `<<expression> <operator> <expression>>` (the expressions and operator are literally between angle brackets)
  - **Input**: `input <expression>`
+ - **Call**: `call <function-identifier>([parameters])`
+ - **Pycall**: `pycall <python-function-identifier>([parameters])`
 
 ## Operators
 ### Arithmetic operators

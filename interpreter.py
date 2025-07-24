@@ -43,6 +43,16 @@ def get_string(expression):
             if expression['operator'] == "lt":
                 operator = "<"
                 return f"int({number(expression['left'])}) {operator} int({number(expression['right'])})"
+        case "func_call":
+            totalParamString = ""
+            for param in expression['params']:
+                totalParamString += get_string(param) + ","
+            return f"SCRIPT_{expression['name']}({totalParamString[:-1]})"
+        case "py_func_call":
+            totalParamString = ""
+            for param in expression['params']:
+                totalParamString += get_string(param) + ","
+            return f"{expression['name']}({totalParamString[:-1]})"
 
 def run(parsed):
     pythonActions = []
@@ -95,7 +105,7 @@ def run(parsed):
                             indented_lines = "\n".join("  " + line if line.strip() != "" else line for line in interpreted.split("\n"))
                             block_lines.append(indented_lines)
                         block_code = "\n".join(block_lines)
-                        return f"{indent_str}def {amount_expr}({totalParamString}):\n{block_code}"
+                        return f"{indent_str}def SCRIPT_{amount_expr}({totalParamString}):\n{block_code}"
                     else:
                         repAction = action['action']
                         repActionInterpreted = interpret_action(repAction, indent + 1)
@@ -103,9 +113,10 @@ def run(parsed):
                 case "func_call":
                     totalParamString = ""
                     for param in action['params']:
-                        print(param)
                         totalParamString += get_string(param) + ","
-                    return f"{indent_str}{action['name']}({totalParamString[:-1]})"
+                    return f"{indent_str}SCRIPT_{action['name']}({totalParamString[:-1]})"
+                case "return_statement":
+                    return f"{indent_str}return {get_string(action['value'])}"
         
         pythonActions.append(interpret_action(action))
     
