@@ -1,4 +1,4 @@
-debug = True
+debug = False
 
 def dummyPrint(a="", b="", c="", d="", e="", f="", g="", h=""):
     pass

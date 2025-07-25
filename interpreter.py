@@ -135,7 +135,6 @@ def run(parsed, file=False):
                 case "return_statement":
                     return f"{indent_str}return {get_string(action['value'])}"
                 case "import_statement":
-                    print(action)
                     run(parser.parse(lexer.tokenize(handle_import(action))), get_string(action['path']))
                     return indent_str
                 case "python_import_statement":
