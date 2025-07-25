@@ -1,8 +1,12 @@
-import sys
 from debug import *
+import parser
+import lexer
+
+import os
 
 build = False
 scope = {}
+allCode = ""
 
 def number(string):
     if string.startswith('"'):
@@ -60,7 +64,14 @@ def get_string_array(expressions):
         allStrings.append(get_string(expression))
     return " ".join(allStrings)
 
-def run(parsed):
+def handle_import(action):
+    fileLocation = get_string(action['path']) + ".bs"
+    with open(file=fileLocation, mode='r') as file:
+        fileContent = file.read()
+        return fileContent
+
+def run(parsed, file=False):
+    global allCode
     pythonActions = []
 
     for action in parsed:
@@ -123,14 +134,21 @@ def run(parsed):
                     return f"{indent_str}SCRIPT_{action['name']}({totalParamString[:-1]})"
                 case "return_statement":
                     return f"{indent_str}return {get_string(action['value'])}"
+                case "import_statement":
+                    print(action)
+                    run(parser.parse(lexer.tokenize(handle_import(action))), get_string(action['path']))
+                    return indent_str
+                case "python_import_statement":
+                    return f"{indent_str}from {get_string(action['lib'])} import *\n"
         
         pythonActions.append(interpret_action(action))
     
     lines = []
     for action in pythonActions:
         lines.append(action)
-    code = "\n".join(lines)
-    if build == False: exec(code, scope, scope)
+    allCode = allCode + f"\n\n########## FILE: {file or "invalid"} ##########\n\n" + "\n".join(lines)
+    if build == False: exec(allCode, scope, scope)
     if build != False:
+        
         with open(build, "w", encoding="utf-8") as file:
-	        file.write(code)
+	        file.write(allCode)

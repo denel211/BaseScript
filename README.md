@@ -14,6 +14,10 @@ In order to use BaseScript to run a BS file, run the command ``basescript filena
 In order to build a BS file to a Python 3.13.2 file, run the command ``basescript filename.bs build=filename.py``. This will generate a working Python file , that can be run with Python 3.13.2.
 
 ## Changelog
+### 1.5
+ - Added function support for multiple parameters
+ - Added import statement
+ - Added pyimport statement
 ### 1.4
  - Changed expression parsing
  - Changed boolean expression logic to understand `and` and `or`
@@ -52,6 +56,15 @@ In order to build a BS file to a Python 3.13.2 file, run the command ``basescrip
  - **func**  
  **Description**: Declare a function. This function can later be called with the `call` statement or expression.  
  **Syntax**: `func <identifier>([parameters]): {...};`  
+ 
+ - **import**  
+ **Description**: Import a BaseScript file. Variables and functions from the imported file can be used in the current file.  
+ **Syntax**: `import <filename>` (filename does not contain the file extension)  
+ **Example**: `import library` (this imports the file `library.bs`)
+
+ - **pyimport**
+ **Description**: Import a default Python library. There is no support for Python files. Only functions can be called using the `pycall` statement or expression. Variables are not supported.  
+ **Syntax**: `import <library>`  
 
 ### Extra statements
  - **log**  

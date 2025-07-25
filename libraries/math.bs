@@ -1,0 +1,77 @@
+pyimport math;
+
+func sqrt(x): {
+    return pycall sqrt(x);
+};
+
+func sin(x): {
+    return pycall sin(x);
+};
+
+func cos(x): {
+    return pycall cos(x);
+};
+
+func tan(x): {
+    return pycall tan(x);
+};
+
+func radians(x): {
+    return pycall radians(x);
+};
+
+func degrees(x): {
+    return pycall degrees(x);
+};
+
+func acos(x): {
+    return pycall acos(x);
+};
+
+func asin(x): {
+    return pycall asin(x);
+};
+
+func atan(x): {
+    return pycall atan(x);
+};
+
+func log(x): {
+    return pycall log(x);
+};
+
+func log10(x): {
+    return pycall log10(x);
+};
+
+func exp(x): {
+    return pycall exp(x);
+};
+
+func pow(x, y): {
+    return pycall pow(x, y);
+};
+
+func floor(x): {
+    return pycall floor(x);
+};
+
+func ceil(x): {
+    return pycall ceil(x);
+};
+
+func fabs(x): {
+    return pycall fabs(x);
+};
+
+func factorial(x): {
+    return pycall factorial(x);
+};
+
+func isinf(x): {
+    return pycall isinf(x);
+};
+
+func isnan(x): {
+    return pycall isnan(x);
+};

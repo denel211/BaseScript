@@ -9,7 +9,7 @@ import time
 def shell():
     printAnyways("=" * 39)
     printAnyways("         BaseScript by Daniel    ")
-    printAnyways("          Version 1.4 - 2025        ")
+    printAnyways("          Version 1.5 - 2025        ")
     printAnyways("=" * 39)
     printAnyways("Welcome to the BaseScript Shell!")
     printAnyways("Type your commands below:")
@@ -36,6 +36,6 @@ if len(sys.argv) > 1:
         content = file.read().replace('\n', '').strip()
         tokenized = lexer.tokenize(content)
         parsed = parser.parse(tokenized)
-        interpreter.run(parsed)
+        interpreter.run(parsed, sys.argv[1])
 else:
     shell()

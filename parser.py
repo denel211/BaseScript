@@ -236,12 +236,18 @@ def parse_statement(tokens):
                 if parsed_stmt is not None:
                     actions.append(parsed_stmt)
             expr = parse_expression(tokens[1:colon_index])
-            params = tokens[2:colon_index - 1]
-            return {"type": "func_declaration", "name": tokens[1], "params": params, "actions": actions}
+            params = tokens[tokens.index("("):colon_index - 1]
+            for param in params:
+                if param == ",":
+                    params.remove(param)
+            return {"type": "func_declaration", "name": "".join(tokens[1:tokens.index("(")]), "params": params, "actions": actions}
         else:
             expr = parse_expression(tokens[1:colon_index])
-            params = tokens[2:colon_index - 1]
-            return {"type": "func_declaration", "name": tokens[1], "params": params, "action": parse_statement(tokens[colon_index+1:])}
+            params = tokens[tokens.index("("):colon_index - 1]
+            for param in params:
+                if param == ",":
+                    params.remove(param)
+            return {"type": "func_declaration", "name": "".join(tokens[1:tokens.index("(")]), "params": params, "action": parse_statement(tokens[colon_index+1:])}
     if tokens[0] == "call":
         func_name = tokens[1]
         params = tokens[tokens.index("(") + 1 : tokens.index(")")]
@@ -253,6 +259,10 @@ def parse_statement(tokens):
         return {"type": "func_call", "name": func_name, "params": paramsParsed}
     if tokens[0] == "return":
         return {"type": "return_statement", "value": parse_expression(tokens[1:])}
+    if tokens[0] == "import":
+        return {"type": "import_statement", "path": parse_expression(["".join(tokens[1:])])}
+    if tokens[0] == "pyimport":
+        return {"type": "python_import_statement", "lib": parse_expression(["".join(tokens[1:])])}
 
 def parse(tokens):
     parsed = []
